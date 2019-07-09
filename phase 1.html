@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+    <center>
+    <canvas id="myCanvas" width="800" height="500" style="border : 1px solid blue;" ></canvas>
+</center>
+
+<script >
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var ballRadius = 10;
+var x = canvas.width/2;
+var y = canvas.height-30;
+var dx = 2;
+var dy = -2;
+
+var ypos = 10;
+var xpos = 75;
+var sliderX = (canvas.width-xpos)/2;
+var distance=56;
+var rightPressed = false;
+var leftPressed = false;
+
+
+
+
+function drawball() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawslider() {
+    ctx.beginPath();
+    ctx.rect(sliderX, 490, xpos ,ypos);
+    ctx.fillStyle = "#000000";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawball();
+    drawslider();
+    
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+    if(y + dy < ballRadius) {
+    dy = -dy;
+        } 
+
+    else if(y + dy > canvas.height-ballRadius) {
+        if(x > sliderX && x < sliderX + xpos) {
+            dy = -dy;
+        }
+        else {
+            alert("GAME OVER");
+            document.location.reload();
+        }
+    }
+    
+    
+        if(rightPressed && sliderX < canvas.width-xpos) {
+        sliderX += 7;
+    }
+    else if(leftPressed && sliderX > 0) {
+        sliderX -= 7;
+    }
+    
+
+
+
+    x += dx;
+    y += dy;
+    
+}
+
+
+
+document.addEventListener("keyup", keyUpHandler, false);
+document.addEventListener("keydown", keyDownHandler, false);
+
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = false;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+setInterval(draw, 10);
+</script> 
+
+</body>
+</html>
